@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "Home",
+    "apps": "Apps",
+    "changelog": "Updates",
+    "faq": "FAQ",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "footer": {
+    "copyright": "Copyright",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "download": "Download",
+    "learnMore": "Learn More",
+    "viewChangelog": "View Changelog",
+    "availablePlatforms": "Available on",
+    "comingSoon": "Coming Soon",
+    "beta": "Beta",
+    "version": "Version",
+    "released": "Released"
+  },
+  "apps": {
+    "allApps": "All Apps",
+    "featuredApps": "Featured Apps"
+  },
+  "download": {
+    "downloadNow": "Download Now",
+    "directDownload": "Direct Download",
+    "appStore": "Mac App Store",
+    "platformSupport": "Platform Support",
+    "currentVersion": "Current Version",
+    "requirements": "System Requirements"
+  },
+  "changelog": {
+    "latestUpdates": "Latest Updates",
+    "allUpdates": "All Updates",
+    "filterByApp": "Filter by App"
+  },
+  "faqPage": {
+    "title": "Frequently Asked Questions",
+    "description": "Find answers to common questions about our apps."
+  },
+  "legal": {
+    "lastUpdated": "Last Updated"
+  }
+}

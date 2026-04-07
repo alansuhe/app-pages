@@ -1,0 +1,6 @@
+---
+// Redirect root to default language
+import { defaultLang } from '@/i18n/utils';
+
+return Astro.redirect(`/${defaultLang}/`);
+---

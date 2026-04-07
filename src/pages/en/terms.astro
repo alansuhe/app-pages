@@ -1,0 +1,79 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'en';
+const translations = await getTranslations(lang);
+const lastUpdated = '2025-01-15';
+---
+
+<BaseLayout lang={lang} title={translations?.nav.terms ?? 'Terms of Service'}>
+  <article class="legal-page">
+    <header>
+      <h1>Terms of Service</h1>
+      <p class="last-updated">{translations?.legal.lastUpdated ?? 'Last Updated'}: {lastUpdated}</p>
+    </header>
+
+    <section class="content">
+      <h2>Agreement</h2>
+      <p>
+        By using Apps Hub applications, you agree to these Terms of Service. If you do not agree,
+        please do not use our applications.
+      </p>
+
+      <h2>License</h2>
+      <p>
+        Our applications are provided under specific license terms. You may use the applications
+        according to the license terms provided with each application.
+      </p>
+
+      <h2>Restrictions</h2>
+      <p>
+        You may not reverse engineer, modify, or distribute our applications without explicit permission.
+      </p>
+
+      <h2>Updates</h2>
+      <p>
+        We may update these Terms of Service at any time. Continued use of our applications after
+        changes constitutes acceptance of the new terms.
+      </p>
+
+      <h2>Limitation of Liability</h2>
+      <p>
+        Apps Hub is not liable for any damages arising from the use of our applications.
+        Use at your own risk.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        For questions about these Terms of Service, please contact us through the appropriate
+        channels as specified in each application.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .last-updated {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .content h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content p {
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+</style>

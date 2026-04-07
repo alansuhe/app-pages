@@ -1,0 +1,11 @@
+{
+  "title": "All My AI",
+  "slug": "all-my-ai",
+  "tagline": "macOS 统一 AI 助手",
+  "description": "All My AI 将多个 AI 模型集成到一个简洁优雅的 macOS 应用中。在一个统一的界面中与 GPT、Claude 和其他领先的 AI 助手进行对话。",
+  "platforms": ["macos"],
+  "status": "coming-soon",
+  "primaryCta": "了解更多",
+  "icon": "",
+  "heroImage": ""
+}

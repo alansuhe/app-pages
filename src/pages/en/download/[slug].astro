@@ -1,0 +1,224 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { getTranslations, buildUrl, type Language } from '@/i18n/utils';
+
+export async function getStaticPaths() {
+  const appsEn = await getCollection('apps', ({ id }) => id.startsWith('en/'));
+  const appsZh = await getCollection('apps', ({ id }) => id.startsWith('zh-cn/'));
+
+  const paths = [];
+
+  for (const app of appsEn) {
+    paths.push({
+      params: { slug: app.data.slug },
+      props: { lang: 'en' as Language, appSlug: app.data.slug },
+    });
+  }
+
+  for (const app of appsZh) {
+    paths.push({
+      params: { slug: app.data.slug },
+      props: { lang: 'zh-cn' as Language, appSlug: app.data.slug },
+    });
+  }
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+const { lang } = Astro.props;
+
+const app = await getEntry('apps', `${lang}/${slug}`);
+const translations = await getTranslations(lang);
+
+if (!app) {
+  return Astro.redirect(buildUrl(`/${lang}/apps/`));
+}
+
+// Get changelog for this app to show current version
+const changelogs = await getCollection('changelog', ({ id, data }) =>
+  id.startsWith(`${lang}/`) && data.app === slug
+);
+const latestChangelog = changelogs.sort((a, b) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
+)[0];
+---
+
+<BaseLayout lang={lang} title={`Download ${app.data.title}`}>
+  <article class="download-page">
+    <header>
+      <h1>{app.data.title}</h1>
+      <p class="tagline">{app.data.tagline}</p>
+    </header>
+
+    <section class="download-info">
+      <h2>{translations?.download.downloadNow ?? 'Download Now'}</h2>
+
+      {app.data.status === 'coming-soon' && (
+        <div class="coming-soon-notice">
+          <p>This app is currently in development and will be available soon.</p>
+          <p>Stay tuned for updates!</p>
+        </div>
+      )}
+
+      {app.data.status === 'available' && (
+        <div class="download-options">
+          <div class="download-option">
+            <h3>{translations?.download.directDownload ?? 'Direct Download'}</h3>
+            <p>Download directly from our website.</p>
+            {app.data.downloadPath && (
+              <a href={app.data.downloadPath} class="btn btn-primary">
+                Download for macOS
+              </a>
+            )}
+            {!app.data.downloadPath && (
+              <p class="placeholder">Download link coming soon.</p>
+            )}
+          </div>
+
+          <div class="download-option">
+            <h3>{translations?.download.appStore ?? 'Mac App Store'}</h3>
+            <p>Available on the Mac App Store.</p>
+            <p class="placeholder">App Store link coming soon.</p>
+          </div>
+        </div>
+      )}
+
+      {app.data.status === 'beta' && (
+        <div class="download-options">
+          <div class="download-option">
+            <h3>Beta Access</h3>
+            <p>Try the beta version and help us improve.</p>
+            {app.data.downloadPath && (
+              <a href={app.data.downloadPath} class="btn btn-primary">
+                Download Beta
+              </a>
+            )}
+            {!app.data.downloadPath && (
+              <p class="placeholder">Beta download coming soon.</p>
+            )}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <section class="version-info">
+      <h2>{translations?.download.currentVersion ?? 'Current Version'}</h2>
+      {latestChangelog && (
+        <div class="version-card">
+          <span class="version">{latestChangelog.data.version}</span>
+          <span class="date">{latestChangelog.data.date.toLocaleDateString()}</span>
+          <p class="summary">{latestChangelog.data.summary}</p>
+          <a href={buildUrl(`/${lang}/changelog/${latestChangelog.id.replace(`${lang}/`, '')}/`)}>
+            View full changelog
+          </a>
+        </div>
+      )}
+      {!latestChangelog && (
+        <p class="placeholder">Version information coming soon.</p>
+      )}
+    </section>
+
+    <section class="requirements">
+      <h2>{translations?.download.requirements ?? 'System Requirements'}</h2>
+      <ul>
+        <li>macOS 12.0 or later</li>
+        <li>Apple Silicon or Intel processor</li>
+        <li>4GB RAM minimum</li>
+      </ul>
+    </section>
+
+    <section class="links">
+      <a href={buildUrl(`/${lang}/apps/${app.data.slug}/`)}>{translations?.common.learnMore ?? 'Learn More'}</a>
+      <a href={buildUrl(`/${lang}/changelog/?app=${app.data.slug}`)}>{translations?.common.viewChangelog ?? 'View Changelog'}</a>
+      <a href={buildUrl(`/${lang}/faq/`)}>{translations?.nav.faq ?? 'FAQ'}</a>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .download-page {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .tagline {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+  }
+
+  .download-info h2,
+  .version-info h2,
+  .requirements h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .coming-soon-notice {
+    padding: var(--spacing-lg);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+
+  .download-options {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  .download-option {
+    padding: var(--spacing-lg);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .download-option h3 {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .placeholder {
+    color: var(--color-text-muted);
+    font-style: italic;
+  }
+
+  .version-card {
+    padding: var(--spacing-md);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+  }
+
+  .version {
+    font-weight: 700;
+    margin-right: var(--spacing-sm);
+  }
+
+  .date {
+    color: var(--color-text-muted);
+  }
+
+  .summary {
+    margin-top: var(--spacing-sm);
+  }
+
+  .requirements ul {
+    margin-top: var(--spacing-md);
+  }
+
+  .links {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 768px) {
+    .download-options {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

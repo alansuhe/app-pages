@@ -1,0 +1,82 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getTranslations, buildUrl } from '@/i18n/utils';
+
+const lang = 'en';
+const translations = await getTranslations(lang);
+
+const faqs = await getCollection('faq', ({ id, data }) =>
+  id.startsWith(`${lang}/`) && data.published !== false
+);
+
+const sortedFaqs = faqs.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout lang={lang} title={translations?.faqPage.title ?? 'FAQ'}>
+  <section class="faq-header">
+    <h1>{translations?.faqPage.title ?? 'Frequently Asked Questions'}</h1>
+    <p>{translations?.faqPage.description ?? 'Find answers to common questions about our apps.'}</p>
+  </section>
+
+  <section class="faq-list">
+    {sortedFaqs.map((faq) => (
+      <article class="faq-item">
+        <h2 class="question">{faq.data.question}</h2>
+        <p class="answer">{faq.data.answer}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="faq-links">
+    <p>Need more help?</p>
+    <a href={buildUrl(`/${lang}/privacy/`)} class="btn btn-outline">Privacy Policy</a>
+    <a href={buildUrl(`/${lang}/terms/`)} class="btn btn-outline">Terms of Service</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .faq-header p {
+    color: var(--color-text-muted);
+  }
+
+  .faq-list {
+    display: grid;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .faq-item {
+    padding: var(--spacing-lg);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .question {
+    margin-bottom: var(--spacing-md);
+    font-size: 1.125rem;
+  }
+
+  .answer {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+
+  .faq-links {
+    text-align: center;
+  }
+
+  .faq-links p {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-muted);
+  }
+
+  .faq-links .btn {
+    margin: var(--spacing-xs);
+  }
+</style>

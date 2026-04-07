@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import AppCard from '@/components/AppCard.astro';
+import { getCollection } from 'astro:content';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'zh-cn';
+const translations = await getTranslations(lang);
+
+const apps = await getCollection('apps', ({ id }) => id.startsWith(`${lang}/`));
+---
+
+<BaseLayout lang={lang} title={translations?.nav.apps ?? '应用'}>
+  <h1>{translations?.apps.allApps ?? '所有应用'}</h1>
+  <p class="page-description">
+    探索 Apps Hub 中的所有可用应用。
+  </p>
+
+  <section class="apps-grid">
+    {apps.map((app) => (
+      <AppCard app={app} lang={lang} />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-description {
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .apps-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  @media (min-width: 768px) {
+    .apps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

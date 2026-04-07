@@ -1,0 +1,81 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'en';
+const translations = await getTranslations(lang);
+const lastUpdated = '2025-01-15';
+---
+
+<BaseLayout lang={lang} title={translations?.nav.privacy ?? 'Privacy Policy'}>
+  <article class="legal-page">
+    <header>
+      <h1>Privacy Policy</h1>
+      <p class="last-updated">{translations?.legal.lastUpdated ?? 'Last Updated'}: {lastUpdated}</p>
+    </header>
+
+    <section class="content">
+      <h2>Introduction</h2>
+      <p>
+        This Privacy Policy describes how Apps Hub collects, uses, and protects your personal information
+        when you use our applications and services.
+      </p>
+
+      <h2>Data Collection</h2>
+      <p>
+        Our applications are designed with privacy in mind. We collect minimal data necessary for
+        the application to function properly. We do not sell or share your personal information
+        with third parties.
+      </p>
+
+      <h2>Usage Data</h2>
+      <p>
+        We may collect anonymous usage statistics to improve our applications. This data does not
+        include personally identifiable information.
+      </p>
+
+      <h2>Third-Party Services</h2>
+      <p>
+        Some applications may integrate with third-party AI services. Please refer to the respective
+        service providers' privacy policies for information about how they handle your data.
+      </p>
+
+      <h2>Security</h2>
+      <p>
+        We implement industry-standard security measures to protect your data. However, no method
+        of electronic storage is 100% secure.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        If you have questions about this Privacy Policy, please contact us through the appropriate
+        channels as specified in each application.
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .last-updated {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .content h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content p {
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+</style>

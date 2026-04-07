@@ -1,0 +1,158 @@
+---
+import { languages, getAlternateUrl, getLangFromUrl, getTranslations, buildUrl, type Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const translations = await getTranslations(lang);
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { href: buildUrl(`/${lang}/`), label: translations?.nav.home ?? 'Home' },
+  { href: buildUrl(`/${lang}/apps/`), label: translations?.nav.apps ?? 'Apps' },
+  { href: buildUrl(`/${lang}/changelog/`), label: translations?.nav.changelog ?? 'Updates' },
+  { href: buildUrl(`/${lang}/faq/`), label: translations?.nav.faq ?? 'FAQ' },
+];
+---
+
+<header>
+  <nav>
+    <div class="nav-brand">
+      <a href={buildUrl(`/${lang}/`)}>Apps Hub</a>
+    </div>
+    <ul class="nav-links">
+      {navItems.map((item) => (
+        <li>
+          <a href={item.href} class:list={[{ active: currentPath === item.href }]}>
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="nav-right">
+      <div class="lang-switcher">
+        {languages.map((l) => (
+          <a
+            href={getAlternateUrl(currentPath, l)}
+            class:list={['lang-link', { active: l === lang }]}
+          >
+            {l === 'en' ? 'EN' : '中文'}
+          </a>
+        ))}
+      </div>
+      <div class="nav-legal">
+        <a href={buildUrl(`/${lang}/privacy`)}>{translations?.nav.privacy ?? 'Privacy'}</a>
+        <a href={buildUrl(`/${lang}/terms`)}>{translations?.nav.terms ?? 'Terms'}</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  header {
+    width: 100%;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  nav {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+  }
+
+  .nav-brand a {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--spacing-lg);
+    list-style: none;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    transition: color 0.2s ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--color-primary);
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+
+  .lang-switcher {
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+  }
+
+  .lang-link {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .lang-link:hover {
+    color: var(--color-text);
+  }
+
+  .lang-link.active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  .nav-legal {
+    display: flex;
+    gap: var(--spacing-md);
+  }
+
+  .nav-legal a {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .nav-legal a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    nav {
+      flex-wrap: wrap;
+    }
+
+    .nav-links {
+      order: 3;
+      width: 100%;
+      justify-content: center;
+      margin-top: var(--spacing-sm);
+    }
+
+    .nav-right {
+      order: 2;
+    }
+  }
+</style>

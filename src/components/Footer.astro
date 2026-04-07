@@ -1,0 +1,89 @@
+---
+import { getTranslations, buildUrl, type Language } from '@/i18n/utils';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+const translations = await getTranslations(lang);
+const currentYear = new Date().getFullYear();
+---
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <a href={buildUrl(`/${lang}/`)}>Apps Hub</a>
+      <p class="footer-copyright">
+        {translations?.footer.copyright ?? 'Copyright'} &copy; {currentYear}.
+        {translations?.footer.rights ?? 'All rights reserved.'}
+      </p>
+    </div>
+    <nav class="footer-nav">
+      <a href={buildUrl(`/${lang}/apps/`)}>{translations?.nav.apps ?? 'Apps'}</a>
+      <a href={buildUrl(`/${lang}/changelog/`)}>{translations?.nav.changelog ?? 'Updates'}</a>
+      <a href={buildUrl(`/${lang}/faq/`)}>{translations?.nav.faq ?? 'FAQ'}</a>
+      <a href={buildUrl(`/${lang}/privacy`)}>{translations?.nav.privacy ?? 'Privacy'}</a>
+      <a href={buildUrl(`/${lang}/terms`)}>{translations?.nav.terms ?? 'Terms'}</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  footer {
+    width: 100%;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-card-bg);
+    margin-top: var(--spacing-xl);
+  }
+
+  .footer-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+  }
+
+  .footer-brand a {
+    font-weight: 700;
+    color: var(--color-text);
+    font-size: 1.125rem;
+  }
+
+  .footer-copyright {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin-top: var(--spacing-xs);
+  }
+
+  .footer-nav {
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+  }
+
+  .footer-nav a {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .footer-nav {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,0 +1,11 @@
+{
+  "title": "All My AI",
+  "slug": "all-my-ai",
+  "tagline": "Your unified AI assistant for macOS",
+  "description": "All My AI brings together multiple AI models into a single, elegant macOS application. Chat with GPT, Claude, and other leading AI assistants in one unified interface.",
+  "platforms": ["macos"],
+  "status": "coming-soon",
+  "primaryCta": "Learn More",
+  "icon": "",
+  "heroImage": ""
+}

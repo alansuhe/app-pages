@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'zh-cn';
+const translations = await getTranslations(lang);
+const lastUpdated = '2025-01-15';
+---
+
+<BaseLayout lang={lang} title={translations?.nav.privacy ?? '隐私政策'}>
+  <article class="legal-page">
+    <header>
+      <h1>隐私政策</h1>
+      <p class="last-updated">{translations?.legal.lastUpdated ?? '最后更新'}: {lastUpdated}</p>
+    </header>
+
+    <section class="content">
+      <h2>简介</h2>
+      <p>
+        本隐私政策描述 Apps Hub 如何在使用我们的应用和服务时收集、使用和保护您的个人信息。
+      </p>
+
+      <h2>数据收集</h2>
+      <p>
+        我们的应用以隐私为设计核心。我们仅收集应用程序正常运行所需的最少数据。
+        我们不会出售或与第三方共享您的个人信息。
+      </p>
+
+      <h2>使用数据</h2>
+      <p>
+        我们可能会收集匿名使用统计数据以改进我们的应用。此数据不包括个人身份信息。
+      </p>
+
+      <h2>第三方服务</h2>
+      <p>
+        某些应用可能与第三方 AI 服务集成。请参阅相应服务提供商的隐私政策，
+        了解他们如何处理您的数据。
+      </p>
+
+      <h2>安全</h2>
+      <p>
+        我们实施行业标准的安全措施来保护您的数据。但是，没有任何电子存储方法是 100% 安全的。
+      </p>
+
+      <h2>联系方式</h2>
+      <p>
+        如果您对本隐私政策有疑问，请通过每个应用中指定的适当渠道联系我们。
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .last-updated {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .content h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content p {
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+</style>

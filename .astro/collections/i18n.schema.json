@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "nav": {
+      "type": "object",
+      "properties": {
+        "home": {
+          "type": "string"
+        },
+        "apps": {
+          "type": "string"
+        },
+        "changelog": {
+          "type": "string"
+        },
+        "faq": {
+          "type": "string"
+        },
+        "privacy": {
+          "type": "string"
+        },
+        "terms": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "home",
+        "apps",
+        "changelog",
+        "faq",
+        "privacy",
+        "terms"
+      ]
+    },
+    "footer": {
+      "type": "object",
+      "properties": {
+        "copyright": {
+          "type": "string"
+        },
+        "rights": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "copyright",
+        "rights"
+      ]
+    },
+    "common": {
+      "type": "object",
+      "properties": {
+        "download": {
+          "type": "string"
+        },
+        "learnMore": {
+          "type": "string"
+        },
+        "viewChangelog": {
+          "type": "string"
+        },
+        "availablePlatforms": {
+          "type": "string"
+        },
+        "comingSoon": {
+          "type": "string"
+        },
+        "beta": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "released": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "download",
+        "learnMore",
+        "viewChangelog",
+        "availablePlatforms",
+        "comingSoon",
+        "beta",
+        "version",
+        "released"
+      ]
+    },
+    "apps": {
+      "type": "object",
+      "properties": {
+        "allApps": {
+          "type": "string"
+        },
+        "featuredApps": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "allApps",
+        "featuredApps"
+      ]
+    },
+    "download": {
+      "type": "object",
+      "properties": {
+        "downloadNow": {
+          "type": "string"
+        },
+        "directDownload": {
+          "type": "string"
+        },
+        "appStore": {
+          "type": "string"
+        },
+        "platformSupport": {
+          "type": "string"
+        },
+        "currentVersion": {
+          "type": "string"
+        },
+        "requirements": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "downloadNow",
+        "directDownload",
+        "appStore",
+        "platformSupport",
+        "currentVersion",
+        "requirements"
+      ]
+    },
+    "changelog": {
+      "type": "object",
+      "properties": {
+        "latestUpdates": {
+          "type": "string"
+        },
+        "allUpdates": {
+          "type": "string"
+        },
+        "filterByApp": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "latestUpdates",
+        "allUpdates",
+        "filterByApp"
+      ]
+    },
+    "faqPage": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description"
+      ]
+    },
+    "legal": {
+      "type": "object",
+      "properties": {
+        "lastUpdated": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "lastUpdated"
+      ]
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nav",
+    "footer",
+    "common",
+    "apps",
+    "download",
+    "changelog",
+    "faqPage",
+    "legal"
+  ]
+}

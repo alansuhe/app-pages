@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import AppCard from '@/components/AppCard.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'zh-cn';
+const translations = await getTranslations(lang);
+
+// Get apps for current language
+const apps = await getCollection('apps', ({ id }) => id.startsWith(`${lang}/`));
+---
+
+<BaseLayout lang={lang} title={translations?.apps.featuredApps ?? '精选应用'}>
+  <section class="hero">
+    <h1>{translations?.apps.allApps ?? '所有应用'}</h1>
+    <p class="hero-description">
+      探索我们为提升您的生产力而设计的桌面应用系列。
+    </p>
+  </section>
+
+  <section class="apps-grid">
+    {apps.map((app) => (
+      <AppCard app={app} lang={lang} />
+    ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .hero h1 {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .hero-description {
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .apps-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  @media (min-width: 768px) {
+    .apps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

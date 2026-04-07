@@ -1,0 +1,149 @@
+---
+import { getTranslations, buildUrl, type Language } from '@/i18n/utils';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  app: CollectionEntry<'apps'>;
+  lang: Language;
+}
+
+const { app, lang } = Astro.props;
+const translations = await getTranslations(lang);
+const statusLabel = app.data.status === 'available'
+  ? translations?.common.download
+  : app.data.status === 'beta'
+    ? translations?.common.beta
+    : translations?.common.comingSoon;
+---
+
+<article class="app-card">
+  <div class="app-header">
+    {app.data.icon && <img src={app.data.icon} alt={app.data.title} class="app-icon" />}
+    <div class="app-info">
+      <h2 class="app-title">{app.data.title}</h2>
+      <p class="app-tagline">{app.data.tagline}</p>
+    </div>
+  </div>
+  <p class="app-description">{app.data.description}</p>
+  <div class="app-meta">
+    <div class="platforms">
+      <span class="label">{translations?.common.availablePlatforms ?? 'Available on'}:</span>
+      <ul class="platform-list">
+        {app.data.platforms.map((platform) => (
+          <li class="platform">{platform}</li>
+        ))}
+      </ul>
+    </div>
+    <span class="status" data-status={app.data.status}>{statusLabel}</span>
+  </div>
+  <div class="app-actions">
+    <a href={buildUrl(`/${lang}/apps/${app.data.slug}/`)} class="btn btn-outline">
+      {translations?.common.learnMore ?? 'Learn More'}
+    </a>
+    <a href={buildUrl(`/${lang}/download/${app.data.slug}/`)} class="btn">
+      {translations?.common.download ?? 'Download'}
+    </a>
+  </div>
+</article>
+
+<style>
+  .app-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .app-header {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+  }
+
+  .app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+
+  .app-info {
+    flex: 1;
+  }
+
+  .app-title {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .app-tagline {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .app-description {
+    color: var(--color-text);
+    line-height: 1.6;
+  }
+
+  .app-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .platforms {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+  }
+
+  .label {
+    font-weight: 500;
+  }
+
+  .platform-list {
+    list-style: none;
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
+  .platform {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .status {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    font-weight: 500;
+  }
+
+  .status[data-status="available"] {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  .status[data-status="beta"] {
+    background: #ffc107;
+    color: #1a1a1a;
+  }
+
+  .app-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+  }
+
+  .app-actions .btn {
+    flex: 1;
+    text-align: center;
+  }
+</style>

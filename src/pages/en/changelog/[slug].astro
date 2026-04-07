@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { getTranslations, buildUrl, type Language } from '@/i18n/utils';
+
+export async function getStaticPaths() {
+  const changelogsEn = await getCollection('changelog', ({ id }) => id.startsWith('en/'));
+  const changelogsZh = await getCollection('changelog', ({ id }) => id.startsWith('zh-cn/'));
+
+  const paths = [];
+
+  for (const entry of changelogsEn) {
+    const slug = entry.id.replace('en/', '');
+    paths.push({
+      params: { slug },
+      props: { lang: 'en' as Language },
+    });
+  }
+
+  for (const entry of changelogsZh) {
+    const slug = entry.id.replace('zh-cn/', '');
+    paths.push({
+      params: { slug },
+      props: { lang: 'zh-cn' as Language },
+    });
+  }
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+const { lang } = Astro.props;
+
+const entry = await getEntry('changelog', `${lang}/${slug}`);
+const translations = await getTranslations(lang);
+
+if (!entry) {
+  return Astro.redirect(buildUrl(`/${lang}/changelog/`));
+}
+
+const { Content } = await render(entry);
+---
+
+<BaseLayout lang={lang} title={`${entry.data.app} ${entry.data.version}`}>
+  <article class="changelog-detail">
+    <header>
+      <h1>{entry.data.app.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} {entry.data.version}</h1>
+      <div class="meta">
+        <time datetime={entry.data.date.toISOString()}>
+          {lang === 'zh-cn'
+            ? entry.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+            : entry.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </div>
+      <p class="summary">{entry.data.summary}</p>
+    </header>
+
+    <section class="content">
+      <Content />
+    </section>
+
+    <footer class="changelog-footer">
+      <a href={buildUrl(`/${lang}/changelog/`)} class="btn btn-outline">
+        {translations?.changelog.allUpdates ?? 'All Updates'}
+      </a>
+      <a href={buildUrl(`/${lang}/apps/${entry.data.app}/`)} class="btn btn-outline">
+        {translations?.common.learnMore ?? 'Learn More'}
+      </a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .changelog-detail {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  header h1 {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .meta {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .summary {
+    color: var(--color-text);
+    font-size: 1.125rem;
+  }
+
+  .content {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .content :global(h2) {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content :global(h3) {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .content :global(ul),
+  .content :global(ol) {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .changelog-footer {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+</style>

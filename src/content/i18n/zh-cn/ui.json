@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "home": "首页",
+    "apps": "应用",
+    "changelog": "更新日志",
+    "faq": "常见问题",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  },
+  "footer": {
+    "copyright": "版权所有",
+    "rights": "保留所有权利。"
+  },
+  "common": {
+    "download": "下载",
+    "learnMore": "了解更多",
+    "viewChangelog": "查看更新日志",
+    "availablePlatforms": "支持平台",
+    "comingSoon": "即将推出",
+    "beta": "测试版",
+    "version": "版本",
+    "released": "发布日期"
+  },
+  "apps": {
+    "allApps": "所有应用",
+    "featuredApps": "精选应用"
+  },
+  "download": {
+    "downloadNow": "立即下载",
+    "directDownload": "直接下载",
+    "appStore": "Mac App Store",
+    "platformSupport": "平台支持",
+    "currentVersion": "当前版本",
+    "requirements": "系统要求"
+  },
+  "changelog": {
+    "latestUpdates": "最新更新",
+    "allUpdates": "所有更新",
+    "filterByApp": "按应用筛选"
+  },
+  "faqPage": {
+    "title": "常见问题",
+    "description": "查找关于我们应用的常见问题解答。"
+  },
+  "legal": {
+    "lastUpdated": "最后更新"
+  }
+}

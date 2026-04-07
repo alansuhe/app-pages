@@ -1,0 +1,149 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getTranslations, buildUrl } from '@/i18n/utils';
+
+const lang = 'zh-cn';
+const translations = await getTranslations(lang);
+
+const changelogs = await getCollection('changelog', ({ id, data }) =>
+  id.startsWith(`${lang}/`) && data.published !== false
+);
+
+// Sort by date descending
+const sortedChangelogs = changelogs.sort((a, b) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Group by app
+const apps = await getCollection('apps', ({ id }) => id.startsWith(`${lang}/`));
+const appSlugs = apps.map((a) => a.data.slug);
+
+const urlApp = Astro.url.searchParams.get('app');
+---
+
+<BaseLayout lang={lang} title={translations?.nav.changelog ?? '更新日志'}>
+  <section class="changelog-header">
+    <h1>{translations?.changelog.latestUpdates ?? '最新更新'}</h1>
+    <p>了解我们应用的最新变化和改进。</p>
+  </section>
+
+  <section class="changelog-filter">
+    <h2>{translations?.changelog.filterByApp ?? '按应用筛选'}</h2>
+    <nav class="filter-nav">
+      <a href={buildUrl(`/${lang}/changelog/`)} class:list={['filter-link', { active: !urlApp }]}>
+        全部
+      </a>
+      {appSlugs.map((slug) => (
+        <a
+          href={buildUrl(`/${lang}/changelog/?app=${slug}`)}
+          class:list={['filter-link', { active: urlApp === slug }]}
+        >
+          {slug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+        </a>
+      ))}
+    </nav>
+  </section>
+
+  <section class="changelog-list">
+    {sortedChangelogs
+      .filter((entry) => !urlApp || entry.data.app === urlApp)
+      .map((entry) => (
+        <article class="changelog-entry">
+          <header>
+            <h3 class="version-title">
+              {entry.data.app.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())} {entry.data.version}
+            </h3>
+            <time class="date" datetime={entry.data.date.toISOString()}>
+              {entry.data.date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </time>
+          </header>
+          <p class="summary">{entry.data.summary}</p>
+          <a href={buildUrl(`/${lang}/changelog/${entry.id.replace(`${lang}/`, '')}/`)} class="btn btn-outline">
+            查看详情
+          </a>
+        </article>
+      ))}
+  </section>
+</BaseLayout>
+
+<style>
+  .changelog-header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .changelog-header p {
+    color: var(--color-text-muted);
+  }
+
+  .changelog-filter {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .changelog-filter h2 {
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+  }
+
+  .filter-nav {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .filter-link {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .filter-link:hover {
+    color: var(--color-text);
+  }
+
+  .filter-link.active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  .changelog-list {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  .changelog-entry {
+    padding: var(--spacing-lg);
+    background: var(--color-card-bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+
+  .changelog-entry header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .version-title {
+    font-size: 1.25rem;
+  }
+
+  .date {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .summary {
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+  }
+</style>

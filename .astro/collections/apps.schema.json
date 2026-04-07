@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "macos",
+          "windows",
+          "linux"
+        ]
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "coming-soon",
+        "beta"
+      ]
+    },
+    "primaryCta": {
+      "type": "string"
+    },
+    "downloadPath": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "heroImage": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "slug",
+    "tagline",
+    "description",
+    "platforms",
+    "status"
+  ]
+}

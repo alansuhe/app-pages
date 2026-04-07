@@ -1,0 +1,74 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getTranslations } from '@/i18n/utils';
+
+const lang = 'zh-cn';
+const translations = await getTranslations(lang);
+const lastUpdated = '2025-01-15';
+---
+
+<BaseLayout lang={lang} title={translations?.nav.terms ?? '使用条款'}>
+  <article class="legal-page">
+    <header>
+      <h1>使用条款</h1>
+      <p class="last-updated">{translations?.legal.lastUpdated ?? '最后更新'}: {lastUpdated}</p>
+    </header>
+
+    <section class="content">
+      <h2>协议</h2>
+      <p>
+        使用 Apps Hub 应用即表示您同意这些使用条款。如果您不同意，请不要使用我们的应用。
+      </p>
+
+      <h2>许可</h2>
+      <p>
+        我们的应用根据特定的许可条款提供。您可以根据每个应用提供的许可条款使用应用。
+      </p>
+
+      <h2>限制</h2>
+      <p>
+        未经明确许可，您不得逆向工程、修改或分发我们的应用。
+      </p>
+
+      <h2>更新</h2>
+      <p>
+        我们可能随时更新这些使用条款。变更后继续使用我们的应用即表示接受新条款。
+      </p>
+
+      <h2>责任限制</h2>
+      <p>
+        Apps Hub 对因使用我们的应用而产生的任何损害不承担责任。使用风险自负。
+      </p>
+
+      <h2>联系方式</h2>
+      <p>
+        如有关于这些使用条款的问题，请通过每个应用中指定的适当渠道联系我们。
+      </p>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 800px;
+  }
+
+  header {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .last-updated {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+  }
+
+  .content h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .content p {
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+  }
+</style>
