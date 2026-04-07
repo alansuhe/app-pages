@@ -11,7 +11,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://alansuhe.github.io',
-  base: '/apps-hub-github-pages',
+  base: '/app-pages',
   output: 'static',
 
   i18n: {
